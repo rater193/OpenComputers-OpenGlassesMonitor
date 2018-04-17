@@ -10,10 +10,8 @@ Register the repository through this command<br/>
 ```batch
 oppm register rater193/OpenComputers-OpenGlassesMonitor
 ```
-<br/>
 Step 3:<br/>
 Install the oppm package<br/>
 ```batch
 oppm install baseglasses
 ```
-<br/>

@@ -21,3 +21,9 @@ oppm install baseglasses
 ```batch
 oppm update baseglasses
 ```
+## Launch instructions:
+ After following the installation instructions, you can now run it by just typing in baseglasses into the terminal
+```batch
+baseglasses
+```
+ 

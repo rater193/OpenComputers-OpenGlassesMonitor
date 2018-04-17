@@ -1,5 +1,13 @@
 # OpenComputers-OpenGlassesMonitor
 
 Installation instructions:<br/>
-Coming soon!<br/>
-This will require you to install oppm first, then to pull a pastebin script later to add the repository to the list.
+Step 1:<br/>
+Install OPPM<br/>
+<br/>
+Step 2:<br/>
+Register the repository through this command<br/>
+oppm register rater193/OpenComputers-OpenGlassesMonitor<br/>
+<br/>
+Step 3:<br/>
+Install the oppm package<br/>
+oppm install baseglasses

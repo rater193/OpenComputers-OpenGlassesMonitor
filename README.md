@@ -5,7 +5,7 @@
  Insert OPPM Floppy<br/>
  Install oppm to the primary hard drive<br/>
 ```
-oppm install
+install oppm
 ```
 ### Step 2:
  Register the repository through this command

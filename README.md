@@ -17,3 +17,7 @@ oppm register rater193/OpenComputers-OpenGlassesMonitor
 ```batch
 oppm install baseglasses
 ```
+ To update the code, just run
+```batch
+oppm update baseglasses
+```

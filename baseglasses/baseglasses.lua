@@ -31,41 +31,39 @@ function createBatteryContent()
   return content
 end
 
-local batteries = {
-  {
-    ["name"] = "Battery-1",
-    ["power"] = {
-      ["cur"] = "2435",
-      ["max"] = "63215424",
-      ["maxin"] = "10000",
-      ["maxout"] = "10000",
-      ["generatedLastTick"] = "10"
-    },
-    ["content"] = createBatteryContent()
-  },
-  {
-    ["name"] = "Battery-2",
-    ["power"] = {
-      ["cur"] = "2435",
-      ["max"] = "63215424",
-      ["maxin"] = "10000",
-      ["maxout"] = "10000",
-      ["generatedLastTick"] = "10"
-    },
-    ["content"] = createBatteryContent()
-  },
-  {
-    ["name"] = "Battery-3",
-    ["power"] = {
-      ["cur"] = "2435",
-      ["max"] = "63215424",
-      ["maxin"] = "10000",
-      ["maxout"] = "10000",
-      ["generatedLastTick"] = "10"
-    },
-    ["content"] = createBatteryContent()
-  }
-}
+local tpsBG = glasses.addRect()
+local tpsText = glasses.addTextLabel()
+
+tpsBG.setColor(0,0,0)
+tpsBG.setAlpha(0.5)
+tpsBG.setPosition(8,8)
+tpsBG.setSize(128,11)
+
+tpsText.setColor(255,255,255)
+tpsText.setScale(1,1)
+tpsText.setPosition(10,10)
+tpsText.setText("TPS: ...")
+
+
+local batteries = {}
+
+for i, v in pairs(component.list()) do
+  if(v=="big_battery") then
+    table.insert(batteries, {
+      ["name"] = "N/A",
+      ["power"] = {
+        ["cur"] = "0",
+        ["max"] = "0",
+        ["maxin"] = "0",
+        ["maxout"] = "0",
+        ["generatedLastTick"] = "10"
+      },
+      ["content"] = createBatteryContent(),
+      ["address"] = v,
+      ["component"] = component.proxy(v)
+    })
+  end
+end
 
 --Update thread
 thread.create(function()
@@ -75,15 +73,17 @@ thread.create(function()
       local textName = v.content.textName
       local textPower = v.content.textPower
 
-      bg.setPosition(8, 8+(i*24))
+      local _y = 8+(i*36)
+
+      bg.setPosition(8, _y)
       bg.setColor(0,0,0)
       bg.setAlpha(0.5)
-      bg.setSize(128,23)
+      bg.setSize(128,35)
 
-      textName.setPosition(10, 10+(i*24))
+      textName.setPosition(10, _y+2)
       textName.setText("Battery: " .. tostring(v.name) .. "")
 
-      textPower.setPosition(10, 10+(i*24)+12)
+      textPower.setPosition(10, _y+2+10)
       textPower.setText("Power: 0/0")
     end
     os.sleep(1)

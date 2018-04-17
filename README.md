@@ -1,4 +1,3 @@
-# OpenComputers-OpenGlassesMonitor
 ## Installation instructions:
 ### Step 1:
  Setup a basic computer<br/>

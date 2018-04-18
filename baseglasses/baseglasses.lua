@@ -8,6 +8,7 @@ tps = 0
 
 --Used variables
 local glasses = component.glasses
+local timeBefore = os.clock()
 
 --Clearing the glasses
 glasses.removeAll()
@@ -73,7 +74,8 @@ for i, v in pairs(component.list()) do
       },
       ["content"] = createBatteryContent(),
       ["address"] = i,
-      ["proxy"] = component.proxy(i)
+      ["proxy"] = component.proxy(i),
+      ["previouslyCheckedEnergy"] = component.proxy(i).getEnergyStored()
     })
   end
 end
@@ -105,8 +107,14 @@ thread.create(function()
 
       local energyStored = math.floor(v.proxy.getEnergyStored())
       local energyMax = math.floor(v.proxy.getMaxEnergyStored())
+      local difference = v.previouslyCheckedEnergy - energyStored
 
-      tpsText.setText("tps: " .. tostring(tps))
+      if(difference>0) then
+        
+      end
+
+      v.previouslyCheckedEnergy = energyStored
+
 
       local _y = 8+(i*36)
 
@@ -137,7 +145,7 @@ thread.create(function()
   while true do
 
     --Time calculation
-    local timeBefore = os.clock()
+    timeBefore = os.clock()
     local tickBefore = os.time()
     while(tickBefore==os.time()) do
       os.sleep(0.05)
@@ -150,6 +158,7 @@ thread.create(function()
       tps = 20
     end
     tps = tostring(tps)
+    tpsText.setText("tps: " .. tostring(tps))
 
     print("tick took " .. tostring(timeTaken))
   end

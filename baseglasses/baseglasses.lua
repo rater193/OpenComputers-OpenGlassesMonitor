@@ -69,14 +69,14 @@ for i, v in pairs(component.list()) do
         ["generatedLastTick"] = "10"
       },
       ["content"] = createBatteryContent(),
-      ["address"] = v,
-      ["component"] = component.proxy(v)
+      ["address"] = i,
+      ["proxy"] = component.proxy(i)
     })
   end
 end
 
 --Update thread
-thread.create(function()
+--thread.create(function()
   while true do
     for i, v in pairs(batteries) do
       local bg = v.content.bg
@@ -103,11 +103,11 @@ thread.create(function()
       textName.setText("Battery: " .. tostring(v.name) .. "")
 
       textPower.setPosition(10, _y+2+10)
-      textPower.setText("Power: 0/0")
+      textPower.setText("Power: " .. tostring(v.proxy.getEnergyStored()) .. "/" .. tostring(v.proxy.getMaxEnergyStored()))
     end
     os.sleep(1)
   end
-end)
+--end)
 
 --Calculation thread
 thread.create(function()

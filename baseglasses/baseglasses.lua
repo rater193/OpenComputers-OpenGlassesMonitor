@@ -75,6 +75,18 @@ for i, v in pairs(component.list()) do
   end
 end
 
+function shortText(val)
+  local ret = tostring(math.floor(val)) .. " RF"
+  if(val>=1000000000) then
+    ret = tostring((math.floor(val/100000000)/10)) .. "GRF"
+  elseif(val>=1000000) then
+    ret = tostring((math.floor(val/100000)/10)) .. "MRF"
+  elseif(val>=1000) then
+    ret = tostring((math.floor(val/100)/10)) .. "KRF"
+  end
+  return ret
+end
+
 --Update thread
 --thread.create(function()
   while true do
@@ -106,9 +118,9 @@ end
       textName.setText("Battery: " .. tostring(v.name) .. "")
 
       textPower.setPosition(10, _y+2+10)
-      textPower.setText("Power: " .. tostring(energyStored) .. "/" .. tostring(energyMax))
+      textPower.setText("Power: " .. shortText(energyStored) .. "/" .. shortText(energyMax))
     end
-    os.sleep(1)
+    os.sleep(0.01)
   end
 --end)
 

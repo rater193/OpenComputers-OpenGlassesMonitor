@@ -3,6 +3,8 @@
 local component = require("component")
 local thread = require("thread")
 
+tps = 0
+
 --Used variables
 local glasses = component.glasses
 
@@ -90,7 +92,7 @@ function shortText(val)
 end
 
 --Update thread
---thread.create(function()
+thread.create(function()
   while true do
     for i, v in pairs(batteries) do
       local bg = v.content.bg
@@ -102,6 +104,8 @@ end
 
       local energyStored = math.floor(v.proxy.getEnergyStored())
       local energyMax = math.floor(v.proxy.getMaxEnergyStored())
+
+      tpsText.setText("tps: " .. tostring(tps))
 
       local _y = 8+(i*36)
 
@@ -124,9 +128,19 @@ end
     end
     os.sleep(0.01)
   end
---end)
+end)
 
 --Calculation thread
 thread.create(function()
+  while true do
+    local timeBefore = os.clock()
+    os.sleep(0.01)
+    local timeAfter = os.clock()
 
+    local timeTaken = timeAfter-timeBefore
+
+    tps = math.floor(timeTaken*1000) .. "ms"
+
+    print("tick took " .. tostring(timeTaken))
+  end
 end)

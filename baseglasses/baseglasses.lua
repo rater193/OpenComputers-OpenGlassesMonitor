@@ -2,6 +2,7 @@
 --Libraries
 local component = require("component")
 local thread = require("thread")
+local computer = require("computer")
 
 tps = 0
 
@@ -130,11 +131,16 @@ thread.create(function()
   end
 end)
 
+print("computer: " .. tostring(computer))
 --Calculation thread
 thread.create(function()
   while true do
     local timeBefore = os.clock()
-    os.sleep(0.01)
+
+    local tickBefore = os.time()
+    while(tickBefore==os.time()) do
+      os.sleep(0.05)
+    end
     local timeAfter = os.clock()
 
     local timeTaken = timeAfter-timeBefore

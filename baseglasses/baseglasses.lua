@@ -107,10 +107,13 @@ thread.create(function()
 
       local energyStored = math.floor(v.proxy.getEnergyStored())
       local energyMax = math.floor(v.proxy.getMaxEnergyStored())
-      local difference = v.previouslyCheckedEnergy - energyStored
+      local generated = v.previouslyCheckedEnergy - energyStored
+      local remaining = energyMax-energyStored
 
-      if(difference>0) then
-        
+      if(generated==0) then
+
+      else
+        print("Time remaining: " .. tostring(math.abs(math.floor(remaining/generated))) .. " seconds")
       end
 
       v.previouslyCheckedEnergy = energyStored
@@ -160,6 +163,6 @@ thread.create(function()
     tps = tostring(tps)
     tpsText.setText("tps: " .. tostring(tps))
 
-    print("tick took " .. tostring(timeTaken))
+    --print("tick took " .. tostring(timeTaken))
   end
 end)

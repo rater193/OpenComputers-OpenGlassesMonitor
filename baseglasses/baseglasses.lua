@@ -150,7 +150,7 @@ thread.create(function()
     --Time calculation
     timeBefore = os.clock()
     local tickBefore = os.time()
-    while(tickBefore==os.time()) do
+    while(os.time()-tickBefore<=1) do
       os.sleep(0.05)
     end
     local timeAfter = os.clock()
@@ -162,7 +162,7 @@ thread.create(function()
     end
     tps = tostring(tps)
     tpsText.setText("tps: " .. tostring(tps))
-
+    os.sleep(1)
     --print("tick took " .. tostring(timeTaken))
   end
 end)

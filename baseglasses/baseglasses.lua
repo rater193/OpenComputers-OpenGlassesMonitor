@@ -127,7 +127,7 @@ thread.create(function()
       textPower.setPosition(10, _y+2+10)
       textPower.setText("Power: " .. shortText(energyStored) .. "/" .. shortText(energyMax))
     end
-    os.sleep(0.01)
+    os.sleep(1)
   end
 end)
 
@@ -135,14 +135,14 @@ print("computer: " .. tostring(computer))
 --Calculation thread
 thread.create(function()
   while true do
-    local timeBefore = os.clock()
 
+    --Time calculation
+    local timeBefore = os.clock()
     local tickBefore = os.time()
     while(tickBefore==os.time()) do
       os.sleep(0.05)
     end
     local timeAfter = os.clock()
-
     local timeTaken = timeAfter-timeBefore
 
     tps = math.floor(1/timeTaken)

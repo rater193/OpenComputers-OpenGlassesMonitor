@@ -86,6 +86,9 @@ end
       local barBG = v.content.barBG
       local barFG = v.content.barFG
 
+      local energyStored = math.floor(v.proxy.getEnergyStored())
+      local energyMax = math.floor(v.proxy.getMaxEnergyStored())
+
       local _y = 8+(i*36)
 
       bg.setPosition(8, _y)
@@ -97,13 +100,13 @@ end
       barBG.setSize(128,12)
 
       barFG.setPosition(8, _y + 23)
-      barFG.setSize(64,12)
+      barFG.setSize((energyStored/energyMax) * 128,12)
       
       textName.setPosition(10, _y+2)
       textName.setText("Battery: " .. tostring(v.name) .. "")
 
       textPower.setPosition(10, _y+2+10)
-      textPower.setText("Power: " .. tostring(v.proxy.getEnergyStored()) .. "/" .. tostring(v.proxy.getMaxEnergyStored()))
+      textPower.setText("Power: " .. tostring(energyStored) .. "/" .. tostring(energyMax))
     end
     os.sleep(1)
   end

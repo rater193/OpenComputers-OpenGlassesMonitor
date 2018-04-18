@@ -3,12 +3,14 @@
 local component = require("component")
 local thread = require("thread")
 local computer = require("computer")
+local fs = require("filesystem")
 
 tps = 0
 
 --Used variables
 local glasses = component.glasses
 local timeBefore = os.clock()
+local timeConstant = 0.5
 
 --Clearing the glasses
 glasses.removeAll()
@@ -80,6 +82,13 @@ for i, v in pairs(component.list()) do
   end
 end
 
+local function time()
+  local f = io.open("/tmp/timeFile","w")
+  f:write("test")
+  f:close()
+  return(fs.lastModified("/tmp/timeFile"))
+end
+
 function shortText(val)
   local ret = tostring(math.floor(val)) .. " RF"
   if(val>=1000000000000) then
@@ -146,20 +155,17 @@ print("computer: " .. tostring(computer))
 --Calculation thread
 thread.create(function()
   while true do
-
     --Time calculation
-    timeBefore = os.clock()
-    local tickBefore = os.time()
-    while(os.time()-tickBefore<=1) do
-      os.sleep(0.05)
-    end
-    local timeAfter = os.clock()
-    local timeTaken = timeAfter-timeBefore
+    tps = 0
 
-    tps = math.floor(1/timeTaken)
-    if(tps>20) then
-      tps = 20
-    end
+    realTimeOld = time()
+		os.sleep(timeConstant) --waits for an estimated ammount game seconds
+		realTimeNew = time()
+
+    realTimeDiff = realTimeNew-realTimeOld
+
+    tps = math.floor(20000*timeConstant/realTimeDiff)
+
     tps = tostring(tps)
     tpsText.setText("tps: " .. tostring(tps))
     os.sleep(1)

@@ -139,7 +139,11 @@ thread.create(function()
 
     local timeTaken = timeAfter-timeBefore
 
-    tps = math.floor(timeTaken*1000) .. "ms"
+    tps = math.floor(1/timeTaken)
+    if(tps>20) then
+      tps = 20
+    end
+    tps = tostring(tps)
 
     print("tick took " .. tostring(timeTaken))
   end

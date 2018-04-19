@@ -165,7 +165,10 @@ thread.create(function()
     realTimeDiff = realTimeNew-realTimeOld
 
     tps = math.floor(20000*timeConstant/realTimeDiff)
-
+    if(tps>0) then
+      tps = 20
+    end
+    
     tps = tostring(tps)
     tpsText.setText("tps: " .. tostring(tps))
     os.sleep(1)

@@ -103,6 +103,25 @@ function shortText(val)
   return ret
 end
 
+function convertToDateString(val)
+  local ret = tostring(val) .. " seconds")
+  if(val>60) then
+    val = tostring(math.ceil(val/60)) .. " minutes"
+  end
+  if(val>60*60) then
+    val = tostring(math.ceil(val/(60*60))) .. " hrs"
+  end
+  if(val>60*60*24) then
+    val = tostring(math.ceil(val/(60*60*24))) .. " days"
+  end
+  if(val>60*60*24*30) then
+    val = tostring(math.ceil(val/(60*60*24*30))) .. " months"
+  end
+  if(val>60*60*24*30*12) then
+    val = tostring(math.ceil(val/(60*60*24*30*12))) .. " years"
+  end
+end
+
 --Update thread
 thread.create(function()
   while true do
@@ -122,7 +141,7 @@ thread.create(function()
       if(generated==0) then
 
       else
-        print("Time remaining: " .. tostring(math.abs(math.floor(remaining/generated))) .. " seconds")
+        print("Time remaining: " .. convertToDateString(math.abs(math.floor(remaining/generated)))
       end
 
       v.previouslyCheckedEnergy = energyStored
@@ -168,7 +187,7 @@ thread.create(function()
     if(tps>0) then
       tps = 20
     end
-    
+
     tps = tostring(tps)
     tpsText.setText("tps: " .. tostring(tps))
     os.sleep(1)

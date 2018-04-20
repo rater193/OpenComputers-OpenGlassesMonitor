@@ -106,91 +106,100 @@ end
 function convertToDateString(val)
   local ret = tostring(val) .. " seconds"
   if(val>60) then
-    val = tostring(math.ceil(val/60)) .. " minutes"
+    ret = tostring(math.ceil(val/60)) .. " minutes"
   end
   if(val>60*60) then
-    val = tostring(math.ceil(val/(60*60))) .. " hrs"
+    ret = tostring(math.ceil(val/(60*60))) .. " hrs"
   end
   if(val>60*60*24) then
-    val = tostring(math.ceil(val/(60*60*24))) .. " days"
+    ret = tostring(math.ceil(val/(60*60*24))) .. " days"
   end
   if(val>60*60*24*30) then
-    val = tostring(math.ceil(val/(60*60*24*30))) .. " months"
+    ret = tostring(math.ceil(val/(60*60*24*30))) .. " months"
   end
   if(val>60*60*24*30*12) then
-    val = tostring(math.ceil(val/(60*60*24*30*12))) .. " years"
+    ret = tostring(math.ceil(val/(60*60*24*30*12))) .. " years"
   end
+  return ret
 end
 
 --Update thread
 thread.create(function()
-  while true do
-    for i, v in pairs(batteries) do
-      local bg = v.content.bg
-      local textName = v.content.textName
-      local textPower = v.content.textPower
-      local textStatus = v.content.textStatus
-      local barBG = v.content.barBG
-      local barFG = v.content.barFG
+  local status, err = pcall(function()
+    while true do
+      for i, v in pairs(batteries) do
+        local bg = v.content.bg
+        local textName = v.content.textName
+        local textPower = v.content.textPower
+        local textStatus = v.content.textStatus
+        local barBG = v.content.barBG
+        local barFG = v.content.barFG
 
-      local energyStored = math.floor(v.proxy.getEnergyStored())
-      local energyMax = math.floor(v.proxy.getMaxEnergyStored())
-      local generated = v.previouslyCheckedEnergy - energyStored
-      local remaining = energyMax-energyStored
+        local energyStored = math.floor(v.proxy.getEnergyStored())
+        local energyMax = math.floor(v.proxy.getMaxEnergyStored())
+        local generated = v.previouslyCheckedEnergy - energyStored
+        local remaining = energyMax-energyStored
 
-      if(generated==0) then
+        if(generated==0) then
 
-      else
-        print("Time remaining: " .. convertToDateString(math.abs(math.floor(remaining/generated)))
+        else
+          print("Time remaining: " .. convertToDateString(math.abs(math.floor(remaining/generated))))
+        end
+
+        v.previouslyCheckedEnergy = energyStored
+
+
+        local _y = 8+(i*36)
+
+        bg.setPosition(8, _y)
+        bg.setColor(0,0,0)
+        bg.setAlpha(0.5)
+        bg.setSize(128,23)
+
+        barBG.setPosition(8, _y + 23)
+        barBG.setSize(128,12)
+
+        barFG.setPosition(8, _y + 23)
+        barFG.setSize((energyStored/energyMax) * 128,12)
+        
+        textName.setPosition(10, _y+2)
+        textName.setText("Battery: " .. tostring(v.name) .. "")
+
+        textPower.setPosition(10, _y+2+10)
+        textPower.setText("Power: " .. shortText(energyStored) .. "/" .. shortText(energyMax))
       end
-
-      v.previouslyCheckedEnergy = energyStored
-
-
-      local _y = 8+(i*36)
-
-      bg.setPosition(8, _y)
-      bg.setColor(0,0,0)
-      bg.setAlpha(0.5)
-      bg.setSize(128,23)
-
-      barBG.setPosition(8, _y + 23)
-      barBG.setSize(128,12)
-
-      barFG.setPosition(8, _y + 23)
-      barFG.setSize((energyStored/energyMax) * 128,12)
-      
-      textName.setPosition(10, _y+2)
-      textName.setText("Battery: " .. tostring(v.name) .. "")
-
-      textPower.setPosition(10, _y+2+10)
-      textPower.setText("Power: " .. shortText(energyStored) .. "/" .. shortText(energyMax))
+      os.sleep(1)
     end
-    os.sleep(1)
-  end
+  end)
+  print("Glasses updater thread error: " .. tostring(err))
+  print("Press CTRL+ALT+T to terminate program!")
 end)
 
 print("computer: " .. tostring(computer))
 --Calculation thread
 thread.create(function()
-  while true do
-    --Time calculation
-    tps = 0
+  local status, err = pcall(function()
+    while true do
+      --Time calculation
+      tps = 0
 
-    realTimeOld = time()
-		os.sleep(timeConstant) --waits for an estimated ammount game seconds
-		realTimeNew = time()
+      realTimeOld = time()
+      os.sleep(timeConstant) --waits for an estimated ammount game seconds
+      realTimeNew = time()
 
-    realTimeDiff = realTimeNew-realTimeOld
+      realTimeDiff = realTimeNew-realTimeOld
 
-    tps = math.floor(20000*timeConstant/realTimeDiff)
-    if(tps>0) then
-      tps = 20
+      tps = math.floor(20000*timeConstant/realTimeDiff)
+      if(tps>0) then
+        tps = 20
+      end
+
+      tps = tostring(tps)
+      tpsText.setText("tps: " .. tostring(tps))
+      os.sleep(1)
+      --print("tick took " .. tostring(timeTaken))
     end
-
-    tps = tostring(tps)
-    tpsText.setText("tps: " .. tostring(tps))
-    os.sleep(1)
-    --print("tick took " .. tostring(timeTaken))
-  end
+  end)
+  print("TPS thread error: " .. tostring(err))
+  print("Press CTRL+ALT+T to terminate program!")
 end)

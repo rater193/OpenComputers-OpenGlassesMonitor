@@ -94,7 +94,7 @@ function shortText(val)
   if(val>=1000000000000) then
     ret = tostring((math.floor(val/100000000000)/10)) .. "TRF"
   elseif(val>=1000000000) then
-    ret = tostring((math.floor(val/100000000)/10)) .. "MRF"
+    ret = tostring((math.floor(val/100000000)/10)) .. "GRF"
   elseif(val>=1000000) then
     ret = tostring((math.floor(val/100000)/10)) .. "MRF"
   elseif(val>=1000) then

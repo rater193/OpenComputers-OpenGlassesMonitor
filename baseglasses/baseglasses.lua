@@ -106,19 +106,19 @@ end
 function convertToDateString(val)
   local ret = tostring(val) .. " seconds"
   if(val>60) then
-    ret = tostring(math.ceil(val/60)) .. " minutes"
+    ret = tostring(math.floor(val/60)) .. " minutes"
   end
   if(val>60*60) then
-    ret = tostring(math.ceil(val/(60*60))) .. " hrs"
+    ret = tostring(math.floor(val/(60*60))) .. " hrs"
   end
   if(val>60*60*24) then
-    ret = tostring(math.ceil(val/(60*60*24))) .. " days"
+    ret = tostring(math.floor(val/(60*60*24))) .. " days"
   end
   if(val>60*60*24*30) then
-    ret = tostring(math.ceil(val/(60*60*24*30))) .. " months"
+    ret = tostring(math.floor(val/(60*60*24*30))) .. " months"
   end
   if(val>60*60*24*30*12) then
-    ret = tostring(math.ceil(val/(60*60*24*30*12))) .. " years"
+    ret = tostring(math.floor(val/(60*60*24*30*12))) .. " years"
   end
   return ret
 end

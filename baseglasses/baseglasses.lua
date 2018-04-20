@@ -104,7 +104,7 @@ function shortText(val)
 end
 
 function convertToDateString(val)
-  local ret = tostring(val) .. " seconds")
+  local ret = tostring(val) .. " seconds"
   if(val>60) then
     val = tostring(math.ceil(val/60)) .. " minutes"
   end

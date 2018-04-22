@@ -190,7 +190,7 @@ thread.create(function()
       realTimeDiff = realTimeNew-realTimeOld
 
       tps = math.floor(20000*timeConstant/realTimeDiff)
-      if(tps>0) then
+      if(tps>20) then
         tps = 20
       end
 
